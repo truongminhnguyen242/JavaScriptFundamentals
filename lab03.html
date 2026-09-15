@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab 03</title>
+  </head>
+  <body>
+    <form action="#">
+      <input type="text" id="username" /> Username
+      <br />
+      <br />
+      <input type="password" id="password" /> Password <br /><br />
+      <button id="dangnhap-btn">Đăng nhập</button>
+    </form>
+
+    <script>
+      // 1. Định nghĩa tài khoản chuẩn (Nên để dạng chuỗi hết)
+      const userName1 = "hoidanit@gmail.com";
+      const password1 = "123456";
+
+      const cssUsernameBorder = document.getElementById("username");
+      const button = document.querySelector("#dangnhap-btn");
+
+      // 2. Lắng nghe sự kiện click
+      button.addEventListener("click", function (event) {
+        // Chặn form load lại trang
+        event.preventDefault();
+
+        // Lấy giá trị của 2 ô input NGAY TẠI THỜI ĐIỂM BẤM NÚT, và phải dùng .value
+        const testusername = document.querySelector("#username").value;
+        const testpassword = document.querySelector("#password").value;
+
+        // 3. Kiểm tra logic
+        if (testusername === userName1 && testpassword === password1) {
+          alert("Dang nhap thanh cong");
+          window.location.href = "success.html";
+        } else {
+          alert("Tai khoan hoac mat khau sai");
+          // Đổi viền input thành màu đỏ
+          cssUsernameBorder.style.borderColor = "red";
+        }
+      });
+    </script>
+  </body>
+</html>
