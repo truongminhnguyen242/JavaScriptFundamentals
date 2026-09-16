@@ -3,42 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lab 03</title>
+    <title>Document</title>
   </head>
   <body>
-    <form action="#">
-      <input type="text" id="username" /> Username
+    <form id="registerForm">
+      <p>Register</p>
+      <label for="email">Email</label>
+      <input type="email" id="email" />
       <br />
       <br />
-      <input type="password" id="password" /> Password <br /><br />
-      <button id="dangnhap-btn">Đăng nhập</button>
+      <label for="password">Password</label>
+      <input type="password" id="password" />
+      <br />
+      <br />
+      <label for="confirm-password">Confirm password</label>
+      <input type="password" id="confirm-password" />
+      <br />
+      <br />
+      <button type="submit" id="btn">Register</button>
     </form>
 
     <script>
-      // 1. Định nghĩa tài khoản chuẩn (Nên để dạng chuỗi hết)
-      const userName1 = "hoidanit@gmail.com";
-      const password1 = "123456";
+      const form = document.getElementById("registerForm");
+      const textRegister = document.getElementById("btn"); // Nên thêm const/let
 
-      const cssUsernameBorder = document.getElementById("username");
-      const button = document.querySelector("#dangnhap-btn");
-
-      // 2. Lắng nghe sự kiện click
-      button.addEventListener("click", function (event) {
-        // Chặn form load lại trang
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        // Lấy giá trị của 2 ô input NGAY TẠI THỜI ĐIỂM BẤM NÚT, và phải dùng .value
-        const testusername = document.querySelector("#username").value;
-        const testpassword = document.querySelector("#password").value;
+        // Lấy giá trị ra biến cho gọn và dễ đọc
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirm-password").value;
 
-        // 3. Kiểm tra logic
-        if (testusername === userName1 && testpassword === password1) {
-          alert("Dang nhap thanh cong");
-          window.location.href = "success.html";
+        // Sửa lại thành kiểm tra chuỗi rỗng ""
+        if (email === "" || password === "" || confirmPassword === "") {
+          alert("Vui long dien day du thong tin");
+          textRegister.style.color = "orange";
+        } else if (password !== confirmPassword) {
+          alert("Mat khau khong khop");
+          textRegister.style.border = "2px dashed red";
         } else {
-          alert("Tai khoan hoac mat khau sai");
-          // Đổi viền input thành màu đỏ
-          cssUsernameBorder.style.borderColor = "red";
+          alert("Dang ky thanh cong");
+          window.location.href = "welcome.html";
         }
       });
     </script>
