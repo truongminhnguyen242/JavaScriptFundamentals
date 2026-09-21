@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bai Tap LocalStorage</title>
+  </head>
+  <body>
+    <!-- Khởi tạo một mảng chứa tên 2 bài hát mà bạn yêu thích.
+
+              Lưu mảng đó vào kho localStorage với từ khóa (key) là "playlist".
+
+              Lấy dữ liệu từ kho "playlist" ra.
+
+              Thêm 1 bài hát mới (bất kỳ) vào danh sách vừa lấy ra đó.
+
+              Cất danh sách đã cập nhật đè lại vào kho localStorage -->
+    <script>
+      let favoriteSongs = ["Despacito", "Baby"];
+      const favoriteSongsJSON = JSON.stringify(favoriteSongs);
+      localStorage.setItem("playlist", favoriteSongsJSON);
+
+      const currentPlaylistJSON = localStorage.getItem("playlist");
+      const currentPlaylistArray = JSON.parse(currentPlaylistJSON);
+      currentPlaylistArray.push("Open Arm");
+      const newPlaylistJSON = JSON.stringify(currentPlaylistArray);
+
+      localStorage.setItem("playlist", newPlaylistJSON);
+    </script>
+  </body>
+</html>

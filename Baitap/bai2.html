@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bài 2 - Render data, delete</title>
+  </head>
+  <body>
+    <h2>Playlist Chuẩn Quốc Tế</h2>
+
+    <input type="text" id="songInput" placeholder="Nhập tên bài hát..." />
+    <button id="addBtn">Thêm Bài Hát</button>
+
+    <ul id="songList"></ul>
+
+    <script>
+      const songInput = document.getElementById("songInput");
+      const addBtn = document.getElementById("addBtn");
+      const songList = document.getElementById("songList");
+
+      // ==========================================
+      // 1. HÀM VẼ GIAO DIỆN
+      // ==========================================
+      function renderPlaylist() {
+        const playlistJSON = localStorage.getItem("seniorPlaylist") || "[]";
+        const playlistArray = JSON.parse(playlistJSON);
+
+        songList.innerHTML = "";
+
+        playlistArray.forEach((song) => {
+          songList.innerHTML += `
+            <li>
+                <!-- Lấy tên bài hát từ Object -->
+                ${song.name} 
+                
+                <!-- Giấu id độc nhất của bài hát vào túi áo data-id -->
+                <button class="deleteBtn" data-id="${song.id}">Xóa</button>
+            </li>
+          `;
+        });
+      }
+
+      // ==========================================
+      // 2. SỰ KIỆN THÊM BÀI HÁT
+      // ==========================================
+      addBtn.addEventListener("click", function () {
+        const newSongName = songInput.value;
+        if (newSongName === "") return;
+
+        // TẠO OBJECT BÀI HÁT MỚI VỚI ID ĐỘC NHẤT
+        const newSongObject = {
+          id: Date.now(),
+          name: newSongName,
+        };
+
+        const currentJSON = localStorage.getItem("seniorPlaylist") || "[]";
+        const currentArray = JSON.parse(currentJSON);
+
+        currentArray.push(newSongObject);
+
+        // ✅ ĐÃ SỬA: Thêm const và lệnh setItem
+        const newSeniorPlaylistJSON = JSON.stringify(currentArray);
+        localStorage.setItem("seniorPlaylist", newSeniorPlaylistJSON);
+
+        songInput.value = "";
+        renderPlaylist();
+      });
+
+      // ==========================================
+      // 3. SỰ KIỆN XÓA BÀI HÁT BẰNG FILTER
+      // ==========================================
+      songList.addEventListener("click", function (event) {
+        if (event.target.classList.contains("deleteBtn")) {
+          const idCanXoa = Number(event.target.getAttribute("data-id"));
+
+          const currentJSON = localStorage.getItem("seniorPlaylist");
+          let currentArray = JSON.parse(currentJSON);
+
+          // ✅ ĐÃ SỬA: Dùng toán tử !== và viết hoa đúng chữ X
+          currentArray = currentArray.filter((song) => song.id !== idCanXoa);
+
+          // ✅ ĐÃ SỬA: Lỗi chính tả sstringify và thống nhất tên biến
+          const newPlaylistJSON = JSON.stringify(currentArray);
+          localStorage.setItem("seniorPlaylist", newPlaylistJSON);
+
+          renderPlaylist();
+        }
+      });
+
+      // Chạy lần đầu lúc vừa vào web
+      renderPlaylist();
+    </script>
+  </body>
+</html>
