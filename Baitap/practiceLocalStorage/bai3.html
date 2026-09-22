@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To do list</title>
+    <style>
+      body {
+        text-align: center;
+      }
+      ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>To do list</h1>
+    <label for="name">Task:</label>
+    <input type="text" id="task" />
+    <button class="addBtn" id="addButton">Add</button>
+    <ul id="taskList"></ul>
+    <script>
+      const inputTask = document.getElementById("task");
+      const addBtn = document.getElementById("addButton");
+      const taskList = document.getElementById("taskList");
+
+      // render tasks
+      function renderTasks() {
+        const currentTaskJSON = localStorage.getItem("myTasks") || "[]";
+        const currentTaskArray = JSON.parse(currentTaskJSON);
+        taskList.innerHTML = "";
+
+        currentTaskArray.forEach((element) => {
+          taskList.innerHTML += `
+                <li>${element.taskName}</li>
+                <button class="deleteBtn" data-id=${element.id}>Delete</button>
+                `;
+        });
+      }
+      // add task
+      addBtn.addEventListener("click", function () {
+        const task = inputTask.value;
+        if (task === "") return;
+        const taskObject = {
+          id: Date.now(),
+          taskName: task,
+        };
+        const currentTasksJSON = localStorage.getItem("myTasks") || "[]";
+        const currentTasksArray = JSON.parse(currentTasksJSON);
+        currentTasksArray.push(taskObject);
+        const newTasksJSON = JSON.stringify(currentTasksArray);
+        localStorage.setItem("myTasks", newTasksJSON);
+        inputTask.value = "";
+        renderTasks();
+      });
+      // delete task
+      taskList.addEventListener("click", function (event) {
+        if (event.target.classList.contains("deleteBtn")) {
+          const idDelete = Number(event.target.getAttribute("data-id"));
+          const currentTasksJSON = localStorage.getItem("myTasks");
+          let currentTaskArray = JSON.parse(currentTasksJSON);
+          currentTaskArray = currentTaskArray.filter(
+            (task) => task.id !== idDelete,
+          );
+
+          const newTasks = JSON.stringify(currentTaskArray);
+          localStorage.setItem("myTasks", newTasks);
+        }
+        renderTasks();
+      });
+      renderTasks();
+    </script>
+  </body>
+</html>
